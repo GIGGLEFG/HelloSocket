@@ -7,37 +7,37 @@
 #include<sys/socket.h>  
 #include<sys/wait.h>  
   
-#define PORT 1500//·şÎñÆ÷½ÓÊÕµÄ¶Ë¿ÚºÅ   
-#define BACKLOG 5/*×î´ó¼àÌıÊı*/   
+#define PORT 1500//æœåŠ¡å™¨æ¥æ”¶çš„ç«¯å£å·   
+#define BACKLOG 5/*æœ€å¤§ç›‘å¬æ•°*/   
   
 int main(){  
-    int sockfd,new_fd;/*socket¾ä±úºÍ½¨Á¢Á¬½ÓºóµÄĞÂ¾ä±ú*/  
-    struct sockaddr_in my_addr;/*·şÎñÆ÷µÄµØÖ·ĞÅÏ¢½á¹¹Ìå£¬ÏÂÃæÓĞ¾ßÌåµÄÊôĞÔ¸³Öµ*/  
-    struct sockaddr_in their_addr;/*¿Í»§¶ËµÄµØÖ·ĞÅÏ¢*/  
+    int sockfd,new_fd;/*socketå¥æŸ„å’Œå»ºç«‹è¿æ¥åçš„æ–°å¥æŸ„*/  
+    struct sockaddr_in my_addr;/*æœåŠ¡å™¨çš„åœ°å€ä¿¡æ¯ç»“æ„ä½“ï¼Œä¸‹é¢æœ‰å…·ä½“çš„å±æ€§èµ‹å€¼*/  
+    struct sockaddr_in their_addr;/*å®¢æˆ·ç«¯çš„åœ°å€ä¿¡æ¯*/  
     int sin_size;  
   
-    sockfd=socket(AF_INET,SOCK_STREAM,0);//½¨Á¢socket   
+    sockfd=socket(AF_INET,SOCK_STREAM,0);//å»ºç«‹socket   
     if(sockfd==-1){  
         printf("socket failed:%d",errno);  
         return -1;  
     }  
-    my_addr.sin_family=AF_INET;/*¸ÃÊôĞÔ±íÊ¾½ÓÊÕ±¾»ú»òÆäËû»úÆ÷´«Êä*/  
-    my_addr.sin_port=htons(PORT);/*·şÎñÆ÷½ÓÊÕµÄ¶Ë¿ÚºÅ*/  
-    my_addr.sin_addr.s_addr=htonl(INADDR_ANY);/*IPµØÖ·£¬À¨ºÅÄÚÈİ±íÊ¾±¾»úIP*/  
-    bzero(&(my_addr.sin_zero),8);/*½«ÆäËûÊôĞÔÖÃ0*/  
-    if(bind(sockfd,(struct sockaddr*)&my_addr,sizeof(struct sockaddr))<0){//°ó¶¨µØÖ·½á¹¹ÌåºÍsocket  
+    my_addr.sin_family=AF_INET;/*è¯¥å±æ€§è¡¨ç¤ºæ¥æ”¶æœ¬æœºæˆ–å…¶ä»–æœºå™¨ä¼ è¾“*/  
+    my_addr.sin_port=htons(PORT);/*æœåŠ¡å™¨æ¥æ”¶çš„ç«¯å£å·*/  
+    my_addr.sin_addr.s_addr=htonl(INADDR_ANY);/*IPåœ°å€ï¼Œæ‹¬å·å†…å®¹è¡¨ç¤ºæœ¬æœºIP*/  
+    bzero(&(my_addr.sin_zero),8);/*å°†å…¶ä»–å±æ€§ç½®0*/  
+    if(bind(sockfd,(struct sockaddr*)&my_addr,sizeof(struct sockaddr))<0){//ç»‘å®šåœ°å€ç»“æ„ä½“å’Œsocket  
         printf("bind error");  
         return -1;  
     }  
-        listen(sockfd,BACKLOG);//¿ªÆô¼àÌı £¬µÚÒ»¸ö²ÎÊı±¾»úµÄsocket¾ä±ú£¬µÚ¶ş¸ö²ÎÊıÊÇ×î´ó¼àÌıÊı   
+        listen(sockfd,BACKLOG);//å¼€å¯ç›‘å¬ ï¼Œç¬¬ä¸€ä¸ªå‚æ•°æœ¬æœºçš„socketå¥æŸ„ï¼Œç¬¬äºŒä¸ªå‚æ•°æ˜¯æœ€å¤§ç›‘å¬æ•°   
         while(1){  
             sin_size=sizeof(struct sockaddr_in);  
-            new_fd=accept(sockfd,(struct sockaddr*)&their_addr,&sin_size);//ÔÚÕâÀï×èÈûÖªµÀ½ÓÊÕµ½ÏûÏ¢£¬²ÎÊı·Ö±ğÊÇsocket¾ä±ú£¬½ÓÊÕµ½µÄµØÖ·ĞÅÏ¢ÒÔ¼°´óĞ¡   
+            new_fd=accept(sockfd,(struct sockaddr*)&their_addr,&sin_size);//åœ¨è¿™é‡Œé˜»å¡çŸ¥é“æ¥æ”¶åˆ°æ¶ˆæ¯ï¼Œå‚æ•°åˆ†åˆ«æ˜¯socketå¥æŸ„ï¼Œæ¥æ”¶åˆ°çš„åœ°å€ä¿¡æ¯ä»¥åŠå¤§å°   
             if(new_fd==-1){  
                 printf("receive failed");  
        		} else{  
 	            printf("receive success");  
-	            send(new_fd,"Hello World!",12,0);//·¢ËÍÄÚÈİ£¬²ÎÊı·Ö±ğÊÇÈ·ÈÏºóÁ¬½ÓĞÂÉú³ÉµÄ¾ä±ú£¬bufµÄÄÚÈİ£¬bufµÄ´óĞ¡£¬ÆäËûĞÅÏ¢£¨ÉèÎª0¼´¿É£©   
+	            send(new_fd,"Hello World!",12,0);//å‘é€å†…å®¹ï¼Œå‚æ•°åˆ†åˆ«æ˜¯ç¡®è®¤åè¿æ¥æ–°ç”Ÿæˆçš„å¥æŸ„ï¼Œbufçš„å†…å®¹ï¼Œbufçš„å¤§å°ï¼Œå…¶ä»–ä¿¡æ¯ï¼ˆè®¾ä¸º0å³å¯ï¼‰   
         	}  
     	}  
     return 0;  
