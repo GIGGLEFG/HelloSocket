@@ -70,6 +70,40 @@ int main() {
 	#define MAX_DATA 100/*接收到的数据最大程度*/
 	char buf[MAX_DATA];/*储存接收数据*/
 	recv(sockfd,buf,MAX_DATA,0);	 
+
+#if 0
+======== TCP ========
+TCP_Server
+socket()
+bind()
+listen()
+accept()
+write()
+read()
+close() 和shutdown()
+ 
+TCP_Client
+socket()
+connect()
+send() 和recv()
+close() 和shutdown()
+ 
+======== UDP ========
+UDP_Server
+socket()
+bind()
+sendto() 和recvfrom()
+close() 和shutdown()
+ 
+UDP_Client
+socket()
+sendto() 和recvfrom()
+close() 和shutdown()
+
+getpeername() 
+gethostname()
+
+#endif
 	
 	return 0;
 }
